@@ -90,6 +90,10 @@ def test_hashmap_solution() -> None:
             raise AssertionError
 
 def counter_solution(str1: str, str2: str) -> bool:
+    """
+    Use Python's built-in Counter class to create a dictionary for each string of
+    the format {'character': count} and then compare the two dictionaries.
+    """
     return Counter(str1) == Counter(str2)
 
 def test_counter_solution() -> None:
@@ -107,6 +111,7 @@ def test_counter_solution() -> None:
 
 def sorted_solution(str1: str, str2: str) -> bool:
     """
+    Sort the strings. If two strings have the same number of chars in the same order they're identical.
     Time: O(nlogn) 
     Space: O(1) -- if don't count any extra space for sorting
     """
