@@ -63,41 +63,32 @@ def test_encode_string():
 def decode_string(s):
     """
     Decode a single string into a list of strings
+
+    Example Input: "4#lint4#code4#love3#you"
+    Example Output: ["lint","code","love","you"]
     """
 
     output = []
     position = 0
-    input = list(s)
     
+    while position < len(s):
 
-    while position < len(input):
-
+        # Increment counter until find the '#' delimiter
         delim_pos = position
-
-        # Increment j counter until find the '#' delimiter
-        while input[delim_pos] != "#":
+        while s[delim_pos] != "#":
             delim_pos += 1
 
-        # Count indicator is from position counter up to but not incl delim
-        count_arr = input[position:delim_pos]
-        count_int = int("".join(count_arr))
-        # char_count = int(input[position:delim_pos])
-        str_to_add = input[delim_pos+1:delim_pos+1+count_int]
+        # First run, position = 0, delim_pos = 1
+        # Second run, position = 6, delim pos = 7
+
+        # Count encoded value is from position counter up to but not incl delim
+        char_count = int(s[position: delim_pos])
+        
+        
+        str_to_add = s[delim_pos + 1: delim_pos + 1 + char_count]
         output.append(str_to_add)
-        position = delim_pos + count_int
+        position = delim_pos + 1 + char_count 
 
-        print(f"""
-                Position {position}
-                Char Count {count_arr}
-                Count Int {count_int}
-                Str to Add {str_to_add}                    
-                """)
-
-            
-            # print(f"Ending position {position}")
-
-    # print(f"\nInput {s}")
-    # print(f"Final output: {output}\n")
     return output
 
 
@@ -118,17 +109,3 @@ def test_decode_string():
         except AssertionError:
             print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
             raise AssertionError
-
-
-
-# def introspect_decode():
-    
-#     for input, expected in decode_test_inputs.items():
-#         decode_string(input)
-
-# if __name__ == "__main__":
-#     introspect_decode()
-
-
-
-
