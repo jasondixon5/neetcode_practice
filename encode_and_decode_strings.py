@@ -25,9 +25,6 @@ Input: ["we", "saysaysaysay", ":", "yes"]
 Output: ["we", "saysaysaysaysay", ":", "yes"]
 """
 
-# TODO: Fix bug where length value above 9 would not be captured accurately
-#       when decoding string
-
 def encode_string(str_list):
     """
     Encode a list of strings into a single string
