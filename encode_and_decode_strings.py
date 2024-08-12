@@ -20,6 +20,9 @@ Input: ["we", "say", ":", "yes"]
 Output: ["we", "say", ":", "yes"]
 Explanation:
 One possible encode method is: "we:;say:;:::;yes"
+
+Input: ["we", "saysaysaysay", ":", "yes"]
+Output: ["we", "saysaysaysaysay", ":", "yes"]
 """
 
 # TODO: Fix bug where length value above 9 would not be captured accurately
@@ -63,23 +66,33 @@ def decode_string(s):
     """
 
     output = []
-    position = 1
+    position = 0
     input = list(s)
+    
 
     while position < len(input):
-    
-        if input[position]  == "#":
-            char_count = int(input[position-1])
-            str_to_add = "".join(input[position+1:position+char_count+1])
-            output.append(str_to_add)
 
-            # print(f"""
-            #         Position {position}
-            #         Char Count {char_count}
-            #         Str to Add {str_to_add}                    
-            #         """)
+        delim_pos = position
 
-            position = position + char_count + 2
+        # Increment j counter until find the '#' delimiter
+        while input[delim_pos] != "#":
+            delim_pos += 1
+
+        # Count indicator is from position counter up to but not incl delim
+        count_arr = input[position:delim_pos]
+        count_int = int("".join(count_arr))
+        # char_count = int(input[position:delim_pos])
+        str_to_add = input[delim_pos+1:delim_pos+1+count_int]
+        output.append(str_to_add)
+        position = delim_pos + count_int
+
+        print(f"""
+                Position {position}
+                Char Count {count_arr}
+                Count Int {count_int}
+                Str to Add {str_to_add}                    
+                """)
+
             
             # print(f"Ending position {position}")
 
@@ -91,6 +104,7 @@ def decode_string(s):
 decode_test_inputs = {
    "4#lint4#code4#love3#you": ["lint","code","love","you"],
    "2#we3#say1#:3#yes":["we", "say", ":", "yes"],
+   "2#we12#saysaysaysay1#:3#yes": ["we", "saysaysaysay", ":", "yes"],
 }
 
 def test_decode_string():
