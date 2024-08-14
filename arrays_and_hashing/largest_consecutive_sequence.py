@@ -34,7 +34,7 @@ def longest_consecutive_seq_set_approach(nums):
     for n in nums:
         # If start of a seq, calc len of that seq
         # Start identified by having no num to its left on hypoth num line
-        if (n -1) not in nums_set:
+        if (n-1) not in nums_set:
             length = 0 # Initialize length of this seq
             while (n + length) in nums_set:
                 length += 1
