@@ -51,7 +51,23 @@ def find_best_time_trade_stock(prices):
             max_profit = curr_profit
 
     return max_profit
-        
+
+def neetcode_sol_find_best_time_trade_stock(prices):
+
+    l, r = 0, 1
+    max_profit = 0
+
+    while r < len(prices):
+        # If there is a profit, calculate it
+        if prices[l] < prices[r]: 
+            profit = prices[r] - prices[l]
+            max_profit = max(max_profit, profit)
+        else:
+            l = r # Instead of shifting 1, make left equal this current min
+        r+= 1
+
+    return max_profit
+
 def test_find_best_time_trade_stock_with_profit():
     prices = [7,1,5,3,6,4]
     expected = 5
@@ -64,3 +80,14 @@ def test_find_best_time_trade_stock_without_profit():
     sol = find_best_time_trade_stock(prices)
     assert sol == expected
 
+def test_neetcode_sol_find_best_time_trade_stock_with_profit():
+    prices = [7,1,5,3,6,4]
+    expected = 5
+    sol = neetcode_sol_find_best_time_trade_stock(prices)
+    assert sol == expected
+
+def test_neetcode_sol_find_best_time_trade_stock_without_profit():
+    prices = [7,6,4,3,1]
+    expected = 0 
+    sol = neetcode_sol_find_best_time_trade_stock(prices)
+    assert sol == expected
