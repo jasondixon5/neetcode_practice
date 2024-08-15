@@ -37,6 +37,10 @@ Constraints:
 3 <= nums.length <= 3000
 -105 <= nums[i] <= 105
 """
+
+# TODO: Look at possibility of first digit being reused but subresult being
+#       unique. See test commented out at bottom for example.
+
 def three_sum(nums):
     """
     First sort the array
