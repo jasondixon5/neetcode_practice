@@ -66,11 +66,15 @@ def permutation_in_string(s1, s2):
         elif s1_counts[idx] + 1 ==  s2_counts[idx]: # were equal but made them unequal with above line
             matches -= 1
 
+        # Left side of sliding window at this point is one too many to left
+        # 'Chop off' this value to move window by removing count for value
+        # from s2_counts.
+        # Then see if that makes this window of s2 equal to s1
         idx = ord(s2[left_ptr]) - ord('a')
         s2_counts[idx] -= 1
         if s1_counts[idx] == s2_counts[idx]:
             matches += 1
-        elif s1_counts[idx] - 1 ==  s2_counts[idx]: # were equal but made them unequal with above line
+        elif s1_counts[idx] - 1 ==  s2_counts[idx]:
             matches -= 1
 
         left_ptr += 1
