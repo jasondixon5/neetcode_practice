@@ -29,9 +29,21 @@ Explanation: The brackets are not closed in the correct order.
 Constraints:
 
 1 <= s.length <= 1000
+
 """
 def is_valid_parentheses(s):
    """
+   Observe that when a closed parenthesis is encountered in a 'balanced'
+   string, it is immediately preceded by its open counterpart.
+   Valid: ({})[]
+   Invalid: {(})[]
+   In the invalid example, '{' is ok and '(' is ok, but to continue to be
+   valid, that '(' would have to be followed by its closing counterpart
+   ')'. Since it's followed by the previous character's closing counterpart
+   (in this case, '}'), the '(' is not 'balanced' and the string is therefore
+   invalid.
+   
+
    use a stack 
    use a hashmap to map each closing parenthesis to its open counterpart
    Time: O(n)
