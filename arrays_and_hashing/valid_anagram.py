@@ -3,9 +3,11 @@ from collections import Counter, defaultdict
 """
 242. Valid Anagram
 
-Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+Given two strings s and t, return true if t is an anagram of s, and false 
+otherwise.
 
-An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+An Anagram is a word or phrase formed by rearranging the letters of a different
+word or phrase, typically using all the original letters exactly once.
 
  
 
@@ -25,70 +27,92 @@ Constraints:
 s and t consist of lowercase English letters.
  
 
-Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
+Follow up: What if the inputs contain Unicode characters? How would you adapt 
+your solution to such a case?
 """
 
-# Anagram means using all characters of str s, can create str t (all same chars and same quantity of chars)
-inputs = {
-    ("anagram", "nagaram"): True,
-    ("rat", "car"): False,
-    ("loony", "yooln"): True,
-}
+def hashmap_solution(s, t):
 
-def hashmap_solution(str1: str, str2: str) -> bool:
+    # Anagram if each str has same chars and same count of those chars
 
-    """
-    Time: O(str1 len + str2 len)
-    Space: Same
-    """
-    
-    # Verify strs are same length
-    if len(str1) != len(str2):
+    if len(s) != len(s):
+        return False
+
+    s_char_map = {}
+    t_char_map = {}
+
+    for char in s:
+        if char in s_char_map:
+            s_char_map[char] += 1
+        else:
+            s_char_map[char] = 1
+
+    for char in t:
+        if char in t_char_map:
+            t_char_map[char] += 1
+        else:
+            t_char_map[char] = 1
+
+    return s_char_map == t_char_map
+
+def hashmap_solution_not_using_dict_equality(s, t):
+    # Alternate solution that does not use Python's dict eq functionality
+
+    if len(s) != len(t):
         return False
     
-    # Create hashmaps of chars in each str
-    hashmap_1 = defaultdict(int)
-    hashmap_2 = defaultdict(int)
+    s_char_map = {}
+    t_char_map = {}
 
-    for c in str1:
-        hashmap_1[c] += 1
-    for c in str2:
-        hashmap_2[c] +=1
+    for char in s:
+        if char in s_char_map:
+            s_char_map[char] += 1
+        else:
+            s_char_map[char] = 1
 
-    """
-    Alternative to default dict approach
-    hashmap_1, hashmap_2 = {}, {}
-    for i in range(len(str1)):
-        hashmap_1[str1[i]] = i + hashmap_1.get(str1[i], 0)
-        hashmap_2[str2[i]] = i + hashmap_2.get(str2[i], 0)
-    """
+    for char in t:
+        if char in t_char_map:
+            t_char_map[char] += 1
+        else:
+            t_char_map[char] = 1
 
-    # Check that hashmap contents are identical
-    for c, cnt in hashmap_1.items():
-        if hashmap_2.get(c, None) is None or hashmap_2.get(c, None) != cnt:
-            return False
-    """
-    Alternative:
-    for c in hashmap_1:
-        if hashmap_1[c] != hashmap_2.get(c, 0):
-        return False
-    """
-    
-    return True
+    for char in s_char_map:
+        if s_char_map[char] == t_char_map.get(char):
+            del t_char_map[char]
 
+    # If dicts equal then second dict should be empty
+    return not t_char_map
+
+# Anagram means using all characters of str s, can create str t (all same chars 
+# and same quantity of chars)
 def test_hashmap_solution() -> None:
+
+    inputs = {
+        ("anagram", "nagaram"): True,
+        ("rat", "car"): False,
+        ("loony", "yooln"): True,
+    }
 
     for input, expected in inputs.items():
         
         str1, str2 = input
         sol = hashmap_solution(str1, str2)
-        
-        try:
-            assert sol == expected
-        except AssertionError:
-            print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
-            raise AssertionError
+        assert sol == expected
 
+def test_hashmap_solution_not_using_dict_equality() -> None:
+    
+    inputs = {
+        ("anagram", "nagaram"): True,
+        ("rat", "car"): False,
+        ("loony", "yooln"): True,
+    }
+
+    for input, expected in inputs.items():
+        
+        str1, str2 = input
+        sol = hashmap_solution_not_using_dict_equality(str1, str2)
+        assert sol == expected
+        
 def counter_solution(str1: str, str2: str) -> bool:
     """
     Use Python's built-in Counter class to create a dictionary for each string of
@@ -98,20 +122,22 @@ def counter_solution(str1: str, str2: str) -> bool:
 
 def test_counter_solution() -> None:
 
+    inputs = {
+        ("anagram", "nagaram"): True,
+        ("rat", "car"): False,
+        ("loony", "yooln"): True,
+    }
+
     for input, expected in inputs.items():
 
         str1, str2 = input
         sol = counter_solution(str1, str2)
+        assert sol == expected
         
-        try:
-            assert sol == expected
-        except AssertionError:
-            print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
-            raise AssertionError
-
 def sorted_solution(str1: str, str2: str) -> bool:
     """
-    Sort the strings. If two strings have the same number of chars in the same order they're identical.
+    Sort the strings. If two strings have the same number of chars in the same
+    order they're identical.
     Time: O(nlogn) 
     Space: O(1) -- if don't count any extra space for sorting
     """
@@ -119,16 +145,16 @@ def sorted_solution(str1: str, str2: str) -> bool:
 
 def test_sorted_solution() -> None:
 
+    inputs = {
+        ("anagram", "nagaram"): True,
+        ("rat", "car"): False,
+        ("loony", "yooln"): True,
+    }
+
     for input, expected in inputs.items():
 
         str1, str2 = input
         sol = sorted_solution(str1, str2)
         
-        try:
-            assert sol == expected
-        except AssertionError:
-            print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
-            raise AssertionError
-
-
-
+        assert sol == expected
+  
