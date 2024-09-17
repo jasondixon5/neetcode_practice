@@ -1,7 +1,8 @@
 
 """
 Top K Elements in List
-Given an integer array nums and an integer k, return the k most frequent elements within the array.
+Given an integer array nums and an integer k, return the k most frequent 
+elements within the array.
 
 The test cases are generated such that the answer is always unique.
 
@@ -60,40 +61,32 @@ Constraints:
 
 def top_k_frequent_elements_bucket_approach(nums, k):
 
-    """
-    Variation in this approach is to still use an array.
-    Index of array will be the count.
-    Value of array will be a list of which values have that particular count.
-
-    input: [1, 1, 1, 2, 2, 100]
-    idx    val
-    0 .   []
-    1 .   [100]
-    2 .   [2]
-    3 .   [1]
-    Then start at end of array and go backwards    
-    """
-    counts = {}
-    frequencies = [[] for i in range(len(nums) + 1)]
-
+    # Store each unique val in input list and # of occurrences
+    freq_counts = {}
     for n in nums:
-        counts[n] = 1 + counts.get(n, 0)
-    for n, c in counts.items():
-        frequencies[c].append(n)
+        freq_counts[n] = freq_counts.get(n, 0) + 1
+    
+    # Store each elem in sublist at an idx in outer list matching
+    # its frequency
+    freq_map = [[] for n in range(len(nums) + 1)]
+    for val, freq in freq_counts.items():
+        freq_map[freq].append(val)
 
-    res = []
-    for i in range(len(frequencies) -1, 0, -1):
-        for n in frequencies[i]:
-            res.append(n)
-            if len(res) == k:
-                return res
+    # Return top k elements
+    result = []
+    for i in range(len(freq_map) - 1, 1, -1):
+        for n in freq_map[i]:
+            result.append(n)
+        
+        if len(result) == k:
+            return result
+        
+def test_top_k_frequent_elements_bucket_approach():
 
-inputs = {
+    inputs = {
     ((1,2,2,3,3,3), 2): [2,3],
     ((7,7), 1): [7],
-}
-
-def test_top_k_frequent_elements_bucket_approach():
+    }
 
     for input, expected in inputs.items():
 
@@ -101,8 +94,5 @@ def test_top_k_frequent_elements_bucket_approach():
 
         sol = top_k_frequent_elements_bucket_approach(nums, k)
     
-    try:
-        assert sol == expected
-    except AssertionError:
-        print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
-        raise AssertionError
+    assert sol == expected
+ 
