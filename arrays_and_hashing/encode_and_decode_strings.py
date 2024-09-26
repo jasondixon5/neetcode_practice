@@ -164,3 +164,56 @@ def test_decode_string_ri():
     for str_to_decode, expected in decode_test_inputs.items():
         result = decode_string_ri(str_to_decode)
         assert expected == result 
+
+def encode_string_ri2(arr):
+    input_with_lengths = []
+    for s in arr:
+        input_with_lengths.append(f"{len(s)}#{s}")
+
+    return "".join(input_with_lengths)
+ 
+def test_encode_string_ri2():
+
+    encode_test_inputs = {
+        tuple(["lint","code","love","you"]): "4#lint4#code4#love3#you",
+        tuple(["we", "say", ":", "yes"]): "2#we3#say1#:3#yes"
+    }
+
+    for input_str, expected in encode_test_inputs.items():
+        result = encode_string_ri2(input_str)
+        assert expected == result
+
+def decode_string_ri2(s):
+
+    decoded = []
+
+    len_idx_start = 0
+    
+    while len_idx_start < len(s):
+
+        delim = len_idx_start
+        
+        while s[delim] != "#":
+            delim += 1
+        
+        length_to_inspect = int(s[len_idx_start : delim])
+        terminal_boundary = delim + 1 + length_to_inspect
+        decoded.append(
+            s[delim + 1 : terminal_boundary]
+        )
+        len_idx_start = terminal_boundary
+    
+    return decoded
+
+def test_decode_string_ri2():
+
+    decode_test_inputs = {
+        "4#lint4#code4#love3#you": ["lint","code","love","you"],
+        "2#we3#say1#:3#yes":["we", "say", ":", "yes"],
+        "2#we12#saysaysaysay1#:3#yes": ["we", "saysaysaysay", ":", "yes"],
+    }
+
+    for str_to_decode, expected in decode_test_inputs.items():
+        result = decode_string_ri2(str_to_decode)
+        assert expected == result 
+
