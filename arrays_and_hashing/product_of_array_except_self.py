@@ -36,56 +36,19 @@ array does not count as extra space for space complexity analysis.)
 
 def product_except_self_prefix_postfix_approach(nums):
 
-    output = []
-    prefix_products = []
-
+    output = [1] * len(nums)
+    
     prefix = 1
-
     for i in range(len(nums)):
-        prefix_products.append(prefix)
+        output[i] = (prefix)
         prefix = nums[i] * prefix
 
     postfix = 1
     for i in range(len(nums)-1, -1, -1):
-        
-        product = prefix_products[i] * postfix
-        output.append(product)
-        postfix = postfix * nums[i]
+        output[i] = output[i] * postfix
+        postfix = nums[i] * postfix
 
-    # return prefix_products
     return output
-
-"""
-i = 3
-prefix[i] = 6
-postfix = 1
-product = 6 * 1 = 6
-postfix = 1 * 4
-
-i = 2
-prefix[i] = 2
-postfix = 4
-product = 2 * 4 = 8
-postfix = 4 * 3 = 12
-
-
-i = 1
-prefix[i] = 1
-postfix = 12
-product = 1 * 12 = 12
-postfix = 12 * 2 = 24
-
-
-i = 0
-prefix[i] = 1
-postfix = 24
-product = 1 * 24 = 24
-postfix = 24 * 1 = 24
-
-
-"""
-
-
 
 def test_product_except_self_prefix_postfix_approach():
 
