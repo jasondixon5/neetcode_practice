@@ -44,19 +44,16 @@ complexity?
 """
 def two_sum_hashmap_approach(nums, target):
 
-    # Map each num to its index as iter thru list of nums
     idx_map = {}
-
+    output = []
+    
     for i in range(len(nums)):
         diff = target - nums[i]
 
-        if diff in idx_map:
-           # Sort only for testing
-           return sorted([i, idx_map.get(diff)])
+        if idx_map.get(diff) is not None:
+            return [i, idx_map.get(diff)]
         else:
             idx_map[nums[i]] = i
-
-    # No default return because guaranteed to have a solution
 
 def test_two_sum_hashmap_approach():
     
@@ -71,6 +68,6 @@ def test_two_sum_hashmap_approach():
 
         nums = input[0]
         target = input[1]
-        sol = two_sum_hashmap_approach(nums, target)
+        sol = sorted(two_sum_hashmap_approach(nums, target))
         
         assert sol == expected
