@@ -36,20 +36,56 @@ array does not count as extra space for space complexity analysis.)
 
 def product_except_self_prefix_postfix_approach(nums):
 
-    output = [1] * len(nums)
-    
-    # Add prefix values to output
+    output = []
+    prefix_products = []
+
     prefix = 1
-    for i in range(0, len(nums)):
-        output[i] = prefix
-        prefix *= nums[i]
-    
+
+    for i in range(len(nums)):
+        prefix_products.append(prefix)
+        prefix = nums[i] * prefix
+
     postfix = 1
-    for i in range(len(nums) - 1, -1, -1):
-        output[i] *= postfix
-        postfix *= nums[i]
-    
+    for i in range(len(nums)-1, -1, -1):
+        
+        product = prefix_products[i] * postfix
+        output.append(product)
+        postfix = postfix * nums[i]
+
+    # return prefix_products
     return output
+
+"""
+i = 3
+prefix[i] = 6
+postfix = 1
+product = 6 * 1 = 6
+postfix = 1 * 4
+
+i = 2
+prefix[i] = 2
+postfix = 4
+product = 2 * 4 = 8
+postfix = 4 * 3 = 12
+
+
+i = 1
+prefix[i] = 1
+postfix = 12
+product = 1 * 12 = 12
+postfix = 12 * 2 = 24
+
+
+i = 0
+prefix[i] = 1
+postfix = 24
+product = 1 * 24 = 24
+postfix = 24 * 1 = 24
+
+
+"""
+
+
 
 def test_product_except_self_prefix_postfix_approach():
 
@@ -61,86 +97,9 @@ def test_product_except_self_prefix_postfix_approach():
     for input, expected in inputs.items():
 
         sol = product_except_self_prefix_postfix_approach(input)
-
-        try:
-            assert sol == expected
-        except AssertionError:
-            print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
-            raise AssertionError
-          
-def ri_product_except_self(arr):
-
-
-    output = [1] * len(arr)
-    prefix = [1] * len(arr)
-    postfix = [1] * len(arr)
-
-    current_product = 1
-
-    # prefix
-    for i in range(len(arr)):
-        if i == 0:
-            prefix[i] = 1
-        else:
-            current_product = current_product * arr[i-1]
-            prefix[i] = current_product
-
-    current_product = 1
-    for i in range(len(arr) - 1, -1, -1):
-        if i == len(arr) - 1:
-            postfix[i] = 1
-        else:
-            current_product = current_product * arr[i+1]
-            postfix[i] = current_product
-
-    for i in range(len(arr)):
-        output[i] = prefix[i] * postfix[i]
-    
-    return output
-
-def test_ri_product_except_self():
-    
-    inputs = {
-        tuple([1,2,3,4]): [24,12,8,6],
-        tuple([-1,1,0,-3,3]): [0,0,9,0,0],
-    }
-
-    for input, expected in inputs.items():
-
-        sol = ri_product_except_self(input)
-
-        assert sol == expected
-
-def ri_product_except_self_reduced_space(arr):
-
-    output = [1] * len(arr)
-
-    prefix = 1
-    for i in range(0, len(arr)):
-        output[i] = prefix
-        prefix = arr[i] * prefix
-
-    postfix = 1
-    for i in range(len(arr)-1, -1, -1):
-        # before this step, output contains the prefixes
-        # prefix * postfix = desired val
-        output[i] = output[i] * postfix
-        postfix = arr[i] * postfix
-
-    return output
         
-def test_ri_product_except_self_reduced_space():
-
-    inputs = {
-        tuple([1,2,3,4]): [24,12,8,6],
-        tuple([-1,1,0,-3,3]): [0,0,9,0,0],
-    }
-
-    for input, expected in inputs.items():
-
-        sol = ri_product_except_self_reduced_space(input)
-
         assert sol == expected
+
 
 # def _manual_test_ri():
 
