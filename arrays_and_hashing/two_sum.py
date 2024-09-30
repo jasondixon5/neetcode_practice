@@ -42,20 +42,25 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time
 complexity?
 
 """
-def two_sum_hashmap_approach(nums, target):
+def two_sum(nums, target):
 
-    idx_map = {}
-    output = []
-    
+    indices = {}
+    # Store values and their indices
     for i in range(len(nums)):
-        diff = target - nums[i]
-
-        if idx_map.get(diff) is not None:
-            return [i, idx_map.get(diff)]
+        val = nums[i]
+        diff = target - val
+   
+        if diff in indices:
+            return [i, indices.get(diff)]
         else:
-            idx_map[nums[i]] = i
+            indices[val] = i
+    
+    # No defualt return because guaranteed to have a solution
+    # Without this condition would probably return empty list
 
-def test_two_sum_hashmap_approach():
+    
+
+def test_two():
     
     inputs = {
         # Sort key only for testing
@@ -68,6 +73,6 @@ def test_two_sum_hashmap_approach():
 
         nums = input[0]
         target = input[1]
-        sol = sorted(two_sum_hashmap_approach(nums, target))
+        sol = sorted(two_sum(nums, target))
         
         assert sol == expected
