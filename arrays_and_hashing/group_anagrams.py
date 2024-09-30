@@ -31,6 +31,57 @@ strs[i] consists of lowercase English letters.
 
 """
 
+def group_anagrams(strs):
+   
+    anagram_groups = {}
+
+    for s in strs:
+        # Get char counts
+        char_counts = [0] * 26
+        for i in range(len(s)):
+            char = s[i]
+            # Given constraint of only lowercase English letters,
+            # can map char to idx of ascii code
+            idx = ord(char) - ord('a')
+            char_counts[idx] += 1
+        if tuple(char_counts) in anagram_groups:
+            anagram_groups[tuple(char_counts)].append(s)
+        else:
+            anagram_groups[tuple(char_counts)] = [s]
+
+    return anagram_groups.values()
+
+def test_group_anagrams():
+
+    """
+    NOTE!!! 
+    Special handling (diff to other tests) to ensure order of outputs
+    """
+    inputs = {
+
+        tuple(["eat","tea","tan","ate","nat","bat"]): [
+            ["bat"],["nat","tan"],["ate","eat","tea"]],
+
+        tuple([""]): [[""]],
+
+        tuple(["a"]): [["a"]],
+    }
+
+    for input, expected in inputs.items():
+
+        sol = group_anagrams(input)
+
+        sol_sorted = []
+        for sublist in sol:
+            sol_sorted.append(sorted(sublist))
+        sol_sorted = sorted(sol_sorted) # or sol_sorted.sorted()        
+
+        expected_sorted = []
+        for sublist in expected:
+            expected_sorted.append(sorted(sublist))
+        expected_sorted = sorted(expected_sorted)
+         
+        assert sol_sorted == expected_sorted
 
 def group_anagrams_char_frequency_approach(strs):
 
