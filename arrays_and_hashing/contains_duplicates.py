@@ -5,8 +5,6 @@ import pytest
 Given an integer array nums, return true if any value appears at least twice in 
 the array, and return false if every element is distinct.
 
- 
-
 Example 1:
 
 Input: nums = [1,2,3,1]
@@ -26,8 +24,7 @@ Constraints:
 1 <= nums.length <= 105
 -109 <= nums[i] <= 109
 """
-
-def hash_set_solution(arr):
+def contains_duplicates(arr):
 
     seen = set()
 
@@ -36,8 +33,9 @@ def hash_set_solution(arr):
             return True
         else:
             seen.add(arr[i])
+    
     return False
-
+ 
 def test_hash_set_solution():
 
     inputs = {
@@ -48,6 +46,6 @@ def test_hash_set_solution():
 
     for input, expected in inputs.items():
         
-        sol = hash_set_solution(input)
+        sol = contains_duplicates(input)
         assert sol == expected
         
