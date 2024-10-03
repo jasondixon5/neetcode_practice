@@ -59,6 +59,45 @@ Constraints:
     Then start at end of array and go backwards
     """
 
+def top_k_frequent(nums, k):
+
+    # Get counts of each val
+    val_counts = {}
+    for i in range(len(nums)):
+        val = nums[i]
+        if val in val_counts:
+            val_counts[val] += 1
+        else:
+            val_counts[val] = 1
+
+    # Convert counts to a list
+    count_list = [[] for i in range(len(nums)+1)]
+    for val, val_count in val_counts.items():
+        count_list[val_count].append(val)
+
+    # Get most frequent elems up to k
+    output = []
+    for i in range(len(count_list) - 1, -1, -1):
+        if count_list[i]:
+            output.extend(count_list[i])
+            if len(output) >= k:
+                return output
+
+def test_top_k_frequent():
+
+    inputs = {
+    ((1,2,2,3,3,3), 2): [2,3],
+    ((7,7), 1): [7],
+    }
+
+    for input, expected in inputs.items():
+
+        nums, k = input
+
+        sol = top_k_frequent(nums, k)
+    
+    assert sol == expected
+
 def top_k_frequent_elements_bucket_approach(nums, k):
 
     # Store each unique val in input list and # of occurrences
