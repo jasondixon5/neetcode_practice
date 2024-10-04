@@ -1,6 +1,7 @@
 """
 Validate Parentheses
-You are given a string s consisting of the following characters: '(', ')', '{', '}', '[' and ']'.
+You are given a string s consisting of the following characters: 
+'(', ')', '{', '}', '[' and ']'.
 
 The input string s is valid if and only if:
 
@@ -32,49 +33,45 @@ Constraints:
 
 """
 def is_valid_parentheses(s):
-   """
-   Observe that when a closed parenthesis is encountered in a 'balanced'
-   string, it is immediately preceded by its open counterpart.
-   Valid: ({})[]
-   Invalid: {(})[]
-   In the invalid example, '{' is ok and '(' is ok, but to continue to be
-   valid, that '(' would have to be followed by its closing counterpart
-   ')'. Since it's followed by the previous character's closing counterpart
-   (in this case, '}'), the '(' is not 'balanced' and the string is therefore
-   invalid.
-   
+    """
+    Observe that when a closed parenthesis is encountered in a 'balanced'
+    string, it is immediately preceded by its open counterpart.
+    Valid: ({})[]
+    Invalid: {(})[]
+    In the invalid example, '{' is ok and '(' is ok, but to continue to be
+    valid, that '(' would have to be followed by its closing counterpart
+    ')'. Since it's followed by the previous character's closing counterpart
+    (in this case, '}'), the '(' is not 'balanced' and the string is therefore
+    invalid.
 
-   use a stack 
-   use a hashmap to map each closing parenthesis to its open counterpart
-   Time: O(n)
-   Space: O(n)
 
-   """ 
-   close_to_open_map = {
-      ")": "(",
-      "}": "{",
-      "]": "[",
-   }
-    
-   stack = []
+    use a stack 
+    use a hashmap to map each closing parenthesis to its open counterpart
+    Time: O(n)
+    Space: O(n)
 
-   for char in s:
-       if char in close_to_open_map: #i.e., if char is a closing paren
-           
-           # Check stack not empty and that last item is the opening
-           # paren for this char
-           if stack and stack[-1] == close_to_open_map.get(char):
-               stack.pop()
-           else:
-               return False
-           
-       else:
-           stack.append(char)
-   
-   if not stack:
-       return True
-   else:
-       return False
+    """ 
+    closing_parens = {
+        "{": "}",
+        "[": "]",
+        "(": ")",
+    }
+
+    expected_parens = []
+
+    for i in range(len(s)):
+        if s[i] in closing_parens:
+            expected_parens.append(closing_parens.get(s[i]))
+        else:
+            if s[i] == expected_parens.pop():
+                continue
+            else:
+                return False
+            
+    return True
+
+
+
 
 def test_is_valid_parentheses_input_brackets_only_is_valid():
     s = "[]"
