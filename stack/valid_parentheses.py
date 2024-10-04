@@ -63,12 +63,23 @@ def is_valid_parentheses(s):
         if s[i] in closing_parens:
             expected_parens.append(closing_parens.get(s[i]))
         else:
-            if s[i] == expected_parens.pop():
-                continue
-            else:
-                return False
             
-    return True
+            try:
+                if s[i] == expected_parens.pop():
+                    continue
+                else:
+                    return False
+            except IndexError: 
+                # Index Error if try to pop from empty list
+                # Risky because could also have a bug in i for s[i]
+                return False
+
+            
+    # If all closing parens were popped, parens were balanced
+    if expected_parens:
+        return False
+    else:
+        return True
 
 
 
@@ -88,5 +99,17 @@ def test_is_valid_parentheses_input_brack_brace_paren_is_valid():
 def test_is_valid_parentheses_input_bracket_paren_not_valid():
     s = "[(])"
     expected = False 
+    solution = is_valid_parentheses(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_missing_closing_bracket():
+    s = "[()"
+    expected = False
+    solution = is_valid_parentheses(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_missing_opening_bracket():
+    s = "()]"
+    expected = False
     solution = is_valid_parentheses(s)
     assert solution == expected
