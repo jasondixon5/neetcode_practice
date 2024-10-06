@@ -82,6 +82,39 @@ def is_valid_parentheses(s):
         return True
 
 
+def is_valid_parentheses_map_closing_to_opening_parens(s):
+    # This is the original solution on Neetcode site
+    # My solution above was my reimpl from memory and I switched order
+    # of dict and what was added to stack
+
+    opening_parens = {
+        "}": "{",
+        "]": "[",
+        ")": "(",
+    }
+
+    expected_parens = []
+
+    for i in range(len(s)):
+
+        if s[i] in opening_parens:
+
+            # if the character is a closing paren, check if its corresponding
+            # opening version is in the stack
+            if expected_parens and \
+            opening_parens.get(s[i]) == expected_parens[-1]:
+                expected_parens.pop()
+            else:
+                return False
+            
+        else:
+            # if character is an opening paren, add to stack
+            expected_parens.append(s[i])
+
+    if expected_parens:
+        return False
+    else:
+        return True
 
 
 def test_is_valid_parentheses_input_brackets_only_is_valid():
@@ -112,4 +145,34 @@ def test_is_valid_parentheses_input_missing_opening_bracket():
     s = "()]"
     expected = False
     solution = is_valid_parentheses(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_brackets_only_is_valid_orig_appr():
+    s = "[]"
+    expected = True
+    solution = is_valid_parentheses_map_closing_to_opening_parens(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_brack_brace_paren_is_valid_orig_appr():
+    s = "([{}])"
+    expected = True
+    solution = is_valid_parentheses_map_closing_to_opening_parens(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_bracket_paren_not_valid_orig_appr():
+    s = "[(])"
+    expected = False 
+    solution = is_valid_parentheses_map_closing_to_opening_parens(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_missing_closing_bracket_orig_appr():
+    s = "[()"
+    expected = False
+    solution = is_valid_parentheses_map_closing_to_opening_parens(s)
+    assert solution == expected
+
+def test_is_valid_parentheses_input_missing_opening_bracket_orig_appr():
+    s = "()]"
+    expected = False
+    solution = is_valid_parentheses_map_closing_to_opening_parens(s)
     assert solution == expected
