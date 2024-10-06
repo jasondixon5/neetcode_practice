@@ -87,35 +87,35 @@ def is_valid_parentheses_map_closing_to_opening_parens(s):
     # My solution above was my reimpl from memory and I switched order
     # of dict and what was added to stack
 
-    opening_parens = {
-        "}": "{",
-        "]": "[",
-        ")": "(",
+    closing_to_opening_parens_map = {
+
+        '}': '{',
+        ']': '[',
+        ')': '(',
     }
 
-    expected_parens = []
+    expected_openings = []
 
     for i in range(len(s)):
 
-        if s[i] in opening_parens:
-
-            # if the character is a closing paren, check if its corresponding
-            # opening version is in the stack
-            if expected_parens and \
-            opening_parens.get(s[i]) == expected_parens[-1]:
-                expected_parens.pop()
-            else:
-                return False
-            
+        # Char is an opening paren
+        if s[i] not in closing_to_opening_parens_map.keys(): 
+            expected_openings.append(s[i])
+        
+        # Char is a closing paren
         else:
-            # if character is an opening paren, add to stack
-            expected_parens.append(s[i])
+            
+            if not expected_openings:
+                return False
+            elif expected_openings[-1] != closing_to_opening_parens_map[s[i]]:
+                return False
+            else:
+                expected_openings.pop()
 
-    if expected_parens:
-        return False
-    else:
+    if not expected_openings: #i.e., all parens were balanced
         return True
-
+    else:
+        return False
 
 def test_is_valid_parentheses_input_brackets_only_is_valid():
     s = "[]"
