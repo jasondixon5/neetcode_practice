@@ -21,8 +21,38 @@ Constraints:
 1 <= tokens.length <= 1000.
 tokens[i] is "+", "-", "*", or "/", or a string representing an integer in the range [-100, 100].
 """
-
 def interpret_rpn(tokens):
+
+    # TODO: Problem with this approach is that RPN technically only does the
+    #       encountered operation on two numbers at a time and stores that
+    #       
+    operator_tokens = {
+        '+': add,
+        '/': floordiv,
+        '*': mul,
+        '-': sub,
+    }
+
+    intermediate_values = []
+
+    for i in range(len(tokens)):
+
+        if tokens[i] not in operator_tokens:
+            intermediate_values.append(int(tokens[i]))
+
+        else:
+
+            operand2 = intermediate_values.pop()
+            operand1 = intermediate_values.pop()
+
+            operation = operator_tokens.get(tokens[i])
+            val = operation(operand1, operand2)
+
+            intermediate_values.append(val)
+
+    return intermediate_values[0]
+
+def interpret_rpn_orig(tokens):
    
     operator_tokens = {
         '+': add,
