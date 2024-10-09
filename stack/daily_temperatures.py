@@ -26,16 +26,18 @@ Constraints:
 
 def find_warmer_temp_intervals(temps):
 
-    stack = [] # will hold pair of [temp, index]
     res = [0] * len(temps)
+    stack = [] # each entry will be pair repr [index, temperature]
 
     for i in range(len(temps)):
 
-        while stack and temps[i] > stack[-1][0]:
-            stack_temp, stack_idx = stack.pop()
-            res[stack_idx] = (i - stack_idx)
-        stack.append([temps[i], i])
-    
+        while stack and temps[i] > stack[-1][1]:
+
+            stack_index, _ = stack.pop()
+            res[stack_index] = i - stack_index
+        
+        stack.append([i, temps[i]])
+
     return res
 
 def test_find_warmer_temp_intervals_standard():
