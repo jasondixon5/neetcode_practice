@@ -1,9 +1,11 @@
 """
 49. Group Anagrams
 
-Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+Given an array of strings strs, group the anagrams together. You can return the 
+answer in any order.
 
-An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+An Anagram is a word or phrase formed by rearranging the letters of a different 
+word or phrase, typically using all the original letters exactly once.
 
  
 
@@ -29,24 +31,57 @@ strs[i] consists of lowercase English letters.
 
 """
 
-inputs = {
+def group_anagrams(strs):
+   
+    anagram_groups = {}
 
-    tuple(["eat","tea","tan","ate","nat","bat"]): [
-        ["bat"],["nat","tan"],["ate","eat","tea"]],
+    for s in strs:
+        # Get char counts
+        char_counts = [0] * 26
+        for i in range(len(s)):
+            char = s[i]
+            # Given constraint of only lowercase English letters,
+            # can map char to idx of ascii code
+            idx = ord(char) - ord('a')
+            char_counts[idx] += 1
+        if tuple(char_counts) in anagram_groups:
+            anagram_groups[tuple(char_counts)].append(s)
+        else:
+            anagram_groups[tuple(char_counts)] = [s]
 
-    tuple([""]): [[""]],
+    return anagram_groups.values()
 
-    tuple(["a"]): [["a"]],
-}
-
-def group_anagrams_sort_approach(strs):
+def test_group_anagrams():
 
     """
-    Sort each string in the input sequence of strings
-    Time: nlogn where n is avg length of the input strings * m times wherre m is how many input strings given in input sequence
-    Space: O(1) assuming no extra memory for sorting
+    NOTE!!! 
+    Special handling (diff to other tests) to ensure order of outputs
     """
-    pass
+    inputs = {
+
+        tuple(["eat","tea","tan","ate","nat","bat"]): [
+            ["bat"],["nat","tan"],["ate","eat","tea"]],
+
+        tuple([""]): [[""]],
+
+        tuple(["a"]): [["a"]],
+    }
+
+    for input, expected in inputs.items():
+
+        sol = group_anagrams(input)
+
+        sol_sorted = []
+        for sublist in sol:
+            sol_sorted.append(sorted(sublist))
+        sol_sorted = sorted(sol_sorted) # or sol_sorted.sorted()        
+
+        expected_sorted = []
+        for sublist in expected:
+            expected_sorted.append(sorted(sublist))
+        expected_sorted = sorted(expected_sorted)
+         
+        assert sol_sorted == expected_sorted
 
 def group_anagrams_char_frequency_approach(strs):
 
@@ -66,44 +101,51 @@ def group_anagrams_char_frequency_approach(strs):
     """
     result = {}
 
-    for input_str in strs:
-        counts = [0] * 26 # a-z
-        
-        for char in input_str:
-            idx_position = ord(char) - ord('a')
-            counts[idx_position] += 1
-
-        # Coerce list to tuple to allow use as a key
-        counts = tuple(counts)
-        
-        if result.get(counts) is None: # Could also use default dict
-            result[counts] = [input_str] 
+    # For each str in the input list of strs, map the str to a list whose
+    # index is ASCII char code and value is number of instances in str of 
+    # that char
+    for input in strs:
+        # Build array and populate it
+        base_arr = [0 for i in range(ord('z')+1)]
+        for char in input:
+            idx = ord('z') - ord(char)
+            base_arr[idx] += 1
+        if tuple(base_arr) in result:
+            result[tuple(base_arr)].append(input)
         else:
-            result[counts].append(input_str)
-    
+            result[tuple(base_arr)] = [input]
+
     return result.values()
 
 def test_group_anagrams_char_frequency_approach() -> None:
 
     """
-    WARNING!!! 
-    This test will fail due to constraint in order, even when output is correct. 
-    Specifically, can sort within each sublist but unsure how to maintain order
-    between function output and expected output.
-
-    So look at test failure manually to determine if output matches input.
+    NOTE!!! 
+    Special handling (diff to other tests) to ensure order of outputs
     """
+    inputs = {
+
+        tuple(["eat","tea","tan","ate","nat","bat"]): [
+            ["bat"],["nat","tan"],["ate","eat","tea"]],
+
+        tuple([""]): [[""]],
+
+        tuple(["a"]): [["a"]],
+    }
 
     for input, expected in inputs.items():
 
-        sol = group_anagrams_char_frequency_approach(input)        
+        sol = group_anagrams_char_frequency_approach(input)
+
+        sol_sorted = []
+        for sublist in sol:
+            sol_sorted.append(sorted(sublist))
+        sol_sorted = sorted(sol_sorted) # or sol_sorted.sorted()        
+
+        expected_sorted = []
+        for sublist in expected:
+            expected_sorted.append(sorted(sublist))
+        expected_sorted = sorted(expected_sorted)
+
         
-        try:
-            assert sol == expected
-        except AssertionError:
-            print(f"Test failed on input {input}\nExpected: {expected}\nReceived: {sol}")
-            raise AssertionError
-    
-
-
-
+        assert sol_sorted == expected_sorted
