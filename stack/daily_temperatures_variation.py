@@ -23,3 +23,25 @@ Constraints:
 1 <= temperatures.length <= 1000.
 1 <= temperatures[i] <= 100
 """
+
+def calculate_warming_intervals(temps):
+	
+	result = []
+	stack = []
+
+	return result
+
+def test_calculate_warming_intervals_standard():
+	temperatures = [30,38,30,36,35,40,28]
+	expected = [0, 0, 1, 2, 1, 0, 2]
+	solution = calculate_warming_intervals(temperatures)
+
+	assert solution == expected
+
+def test_calculate_warming_intervals_no_warming():
+	temperatures = [20,21,22]
+	expected = [0,0,0]
+	solution = calculate_warming_intervals(temperatures)
+
+	assert solution == expected
+

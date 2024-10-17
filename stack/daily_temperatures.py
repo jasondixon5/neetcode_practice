@@ -23,36 +23,34 @@ Constraints:
 1 <= temperatures.length <= 1000.
 1 <= temperatures[i] <= 100
 """
+def calculate_warming_intervals(temps):
 
-def find_warmer_temp_intervals(temps):
+	stack = [] # Will hold pairs of format [index, temperature]
+	result = [0] * len(temps)
 
-    res = [0] * len(temps)
-    stack = [] # each entry will be pair repr [index, temperature]
+	for i in range(len(temps)):
 
-    for i in range(len(temps)):
+		while stack and temps[i] > stack[-1][1]:
 
-        while stack and temps[i] > stack[-1][1]:
+			idx, temp = stack.pop()
+			result[idx] = i - idx #calc'ing distnc *from* earlier val so store at idx for that val
 
-            stack_index, _ = stack.pop()
-            res[stack_index] = i - stack_index
-        
-        stack.append([i, temps[i]])
+		stack.append([i, temps[i]])
 
-    return res
+	return result
 
-def test_find_warmer_temp_intervals_standard():
+def test_calculate_warming_intervals():
 
     temps = [30,38,30,36,35,40,28]
     expected = [1,4,1,2,1,0,0]
-    output = find_warmer_temp_intervals(temps)
+    output = calculate_warming_intervals(temps)
 
     assert output == expected
 
-def test_find_warmer_temp_intervals_no_warmer_days():
+def test_calculate_warming_intervals_no_warmer_days():
     temps = [22,21,20]
     expected = [0,0,0]
-    output = find_warmer_temp_intervals(temps)
+    output = calculate_warming_intervals(temps)
 
     assert output == expected
-
 

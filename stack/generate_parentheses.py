@@ -1,64 +1,62 @@
 """
-Generate Parentheses
-You are given an integer n. Return all well-formed parentheses strings that you 
-can generate with n pairs of parentheses.
+Given n pairs of parentheses, write a function to generate all combinations of well-formed 
+parentheses.
+
+ 
 
 Example 1:
 
-Input: n = 1
-
-Output: ["()"]
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
 Example 2:
 
-Input: n = 3
-
-Output: ["((()))","(()())","(())()","()(())","()()()"]
-You may return the answer in any order.
+Input: n = 1
+Output: ["()"]
+ 
 
 Constraints:
 
-1 <= n <= 7
+1 <= n <= 8
 """
+
 def generate_parentheses(n):
+	
+	stack = []
+	result = []
 
-    # Only add open parenthesis if count of open < n
-    # Only add closed parenthesis if coount of closed < count of open
-    # Generated parentheses str is valid if open == closed == n
+	def backtrack(open_paren_count, closed_paren_count):
 
-    stack = []
-    res = []
+		if open_paren_count == closed_paren_count == n:
+			result.append("".join(stack))
+			return
 
-    # Recursively build generated parentheses str
-    def backtrack(open_n, closed_n):
-        if open_n == closed_n == n: # base case
-            res.append("".join(stack))
-            return
-        
-        if open_n < n:
-            stack.append("(")
-            backtrack(open_n + 1, closed_n)
-            stack.pop()
+		if open_paren_count < n:
+			stack.append("(")
+			backtrack(open_paren_count + 1, closed_paren_count)
+			stack.pop()
 
-        if closed_n < open_n:
-            stack.append(")")
-            backtrack(open_n, closed_n + 1)
-            stack.pop()
-    
-    backtrack(0, 0)
-    return res
+		if closed_paren_count < open_paren_count:
+			stack.append(")")
+			backtrack(open_paren_count, closed_paren_count + 1)
+			stack.pop()
 
-def test_generate_parentheses_single_pair():
+	backtrack(0, 0)
+	return result
+			
 
-    n = 1
-    expected = ["()"]
-    sol = generate_parentheses(n)
+def test_generate_parentheses_n3():
 
-    assert sol == expected
+	n = 3
+	expected = ["((()))","(()())","(())()","()(())","()()()"]
+	solution = generate_parentheses(n)
 
-def test_generate_parentheses_multiple_pairs():
+	assert sorted(solution) == sorted(expected)
 
-    n = 3
-    expected = ["((()))","(()())","(())()","()(())","()()()"]
-    sol = generate_parentheses(n)
+def test_generate_parentheses_n1():
 
-    assert sol == expected 
+	n = 1
+	expected = ["()"]
+	solution = generate_parentheses(n)
+
+	assert sorted(solution) == sorted(expected)
+
