@@ -40,8 +40,46 @@ Constraints:
 
 # TODO: Look at possibility of first digit being reused but subresult being
 #       unique. See test commented out at bottom for example.
-
 def three_sum(nums):
+	
+	nums = sorted(nums)
+	result = []
+
+	for i in range(len(nums)):
+
+		# Avoid using same int when duplicates exist
+		if i > 0 and nums[i] == nums[i - 1]:
+			continue
+
+		left_ptr = i + 1
+		right_ptr = len(nums) - 1
+		
+		while left_ptr < right_ptr:
+
+			curr_sum = nums[i] + nums[left_ptr] + nums[right_ptr]
+
+			# Sum too small, shift to next highest num 
+			if curr_sum < 0:
+				left_ptr += 1
+
+			# Sum too large, shift to next lower num
+			elif curr_sum > 0:
+				right_ptr -= 1
+			
+			# Sum met req
+			# Store result and shift pointers
+			else:
+				
+				result.append([nums[i], nums[left_ptr], nums[right_ptr]])
+				left_ptr += 1
+				right_ptr -= 1
+
+				while nums[left_ptr] == nums[left_ptr - 1] and left_ptr < right_ptr:
+					left_ptr += 1
+				
+	return result 
+
+def three_sum_original(nums):
     """
     First sort the array
     Then take each elem and run two sum on rest of array
