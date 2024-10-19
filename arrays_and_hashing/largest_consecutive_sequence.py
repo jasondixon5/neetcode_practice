@@ -25,22 +25,32 @@ Constraints:
 -109 <= nums[i] <= 109
 """
 
+def setify(seq):
+
+	result = set()
+
+	for elem in seq:
+		if elem not in result:
+			result.add(elem)
+
+	return result
+
 def longest_consecutive_seq_set_approach(nums):
-    # Initialize a set based on input arr for efficient checking
-    nums_set = set(nums)
-    longest_seq = 0
 
-    # For each elem of input array, check if it's start of a sequence
-    for n in nums:
-        # If start of a seq, calc len of that seq
-        # Start identified by having no num to its left on hypoth num line
-        if (n-1) not in nums_set:
-            length = 0 # Initialize length of this seq
-            while (n + length) in nums_set:
-                length += 1
-            longest_seq = max(length, longest_seq)
+	nums_check = setify(nums)
+	longest = 0
 
-    return longest_seq
+	for i in range(len(nums)):
+		temp_length = 0
+		if nums[i] - 1 not in nums_check: # Found start of a consec seq
+			temp_length = 1
+			temp_idx = 1
+			while nums[i] + temp_idx in nums_check:
+				temp_length += 1
+				temp_idx += 1
+			longest = max(longest, temp_length)
+	
+	return longest
 
 def test_consecutive_seq_set_approach_no_repeated_nums():
    
@@ -55,3 +65,18 @@ def test_consecutive_seq_set_approach_repeated_nums():
     expected = 9
  
     assert expected == longest_consecutive_seq_set_approach(nums)
+
+def test_consecutive_seq_set_approach_no_sequences_gt_one():
+    
+    nums = [0,3,7,5,9,23,-2]
+    expected = 1 
+ 
+    assert expected == longest_consecutive_seq_set_approach(nums)
+
+def test_consecutive_seq_set_approach_input_empty():
+    
+    nums = []
+    expected = 0 
+ 
+    assert expected == longest_consecutive_seq_set_approach(nums)
+

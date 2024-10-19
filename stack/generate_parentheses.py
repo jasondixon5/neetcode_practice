@@ -24,24 +24,22 @@ def generate_parentheses(n):
 	stack = []
 	result = []
 
-	def backtrack(count_open, count_closed):
-	
-		if count_open == count_closed == n:
-			
+	def backtrack(open_paren_n, closed_paren_n):
+
+		if open_paren_n == closed_paren_n == n:
 			result.append("".join(stack))
 			return
 
-		if count_open < n:
+		if open_paren_n < n:
 			stack.append("(")
-			backtrack(count_open + 1, count_closed)
+			backtrack(open_paren_n + 1, closed_paren_n)
 			stack.pop()
 
-		if count_closed < count_open:
+		if closed_paren_n < open_paren_n:
 			stack.append(")")
-			backtrack(count_open, count_closed + 1)
+			backtrack(open_paren_n, closed_paren_n + 1)
 			stack.pop()
 
-		
 	backtrack(0, 0)
 	return result
 
