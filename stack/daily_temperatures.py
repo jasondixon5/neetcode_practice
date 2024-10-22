@@ -30,13 +30,10 @@ def calculate_warming_intervals(temps):
 
     for i in range(len(temps)):
 
-        if not stack:
-            stack.append([i, temps[i]])
-        else:
-            if stack[-1][1] > temps[i]:
-                stack_idx, stack_temp = stack.pop()
-                intervals.append(i - stack_idx)
-                stack.append([i, temps[i]])
+        while stack and temps[i] > stack[-1][1]:
+            stack_idx, stack_temp = stack.pop()
+            intervals[stack_idx] = i - stack_idx
+        stack.append([i, temps[i]])
 
     return intervals
 
@@ -49,8 +46,17 @@ def test_calculate_warming_intervals():
     assert output == expected
 
 def test_calculate_warming_intervals_no_warmer_days():
+
     temps = [22,21,20]
     expected = [0,0,0]
+    output = calculate_warming_intervals(temps)
+
+    assert output == expected
+
+def test_calculate_warming_intervals_input_has_one_entry():
+
+    temps = [24]
+    expected = [0]
     output = calculate_warming_intervals(temps)
 
     assert output == expected
