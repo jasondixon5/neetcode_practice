@@ -64,7 +64,7 @@ def count_car_fleets(target, position, speed):
             tail_car_pos, tail_car_speed = fleets[-1]
             tail_car_time_to_dest = (target - tail_car_pos) / tail_car_speed
 
-            # If head car takes longer to get to dest, 
+            # If head car takes longer to get to dest,
             # cars will collide & become a fleet
             if head_car_time_to_dest >= tail_car_time_to_dest:
                 # So get rid of one of the cars

@@ -3,9 +3,9 @@ Daily Temperatures
 You are given an array of integers temperatures where temperatures[i] represents
 the daily temperatures on the ith day.
 
-Return an array result where result[i] is the number of days after the ith day 
-before a warmer temperature appears on a future day. If there is no day in the 
-future where a warmer temperature will appear for the ith day, set result[i] to 
+Return an array result where result[i] is the number of days after the ith day
+before a warmer temperature appears on a future day. If there is no day in the
+future where a warmer temperature will appear for the ith day, set result[i] to
 0 instead.
 
 Example 1:
@@ -25,19 +25,20 @@ Constraints:
 """
 def calculate_warming_intervals(temps):
 
-	stack = [] # Will hold pairs of format [index, temperature]
-	result = [0] * len(temps)
+    intervals = [0] * len(temps)
+    stack = [] # Will hold a pair for (index, temp)
 
-	for i in range(len(temps)):
+    for i in range(len(temps)):
 
-		while stack and temps[i] > stack[-1][1]:
+        if not stack:
+            stack.append([i, temps[i]])
+        else:
+            if stack[-1][1] > temps[i]:
+                stack_idx, stack_temp = stack.pop()
+                intervals.append(i - stack_idx)
+                stack.append([i, temps[i]])
 
-			idx, temp = stack.pop()
-			result[idx] = i - idx #calc'ing distnc *from* earlier val so store at idx for that val
-
-		stack.append([i, temps[i]])
-
-	return result
+    return intervals
 
 def test_calculate_warming_intervals():
 
@@ -53,4 +54,3 @@ def test_calculate_warming_intervals_no_warmer_days():
     output = calculate_warming_intervals(temps)
 
     assert output == expected
-
